@@ -1,0 +1,27 @@
+{
+  "name": "we-plugin-view",
+  "description": "We.js we-plugin-view plugin",
+  "version": "1.0.0",
+  "main": "plugin.js",
+  "scripts": {
+    "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js"
+  },
+  "keywords": [
+    "we.js",
+    "view",
+    "html",
+    "theme"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "fs-extra": "^0.18.2",
+    "mocha": "^2.2.5",
+    "rimraf": "^2.3.4",
+    "supertest": "^1.0.1",
+    "we-core": "wejs/we-core",
+    "we-test-tools": "wejs/we-test-tools"
+  },
+  "repository": "wejs/we-plugin-view",
+  "author": "Alberto Souza <contato@albertosouza.net>",
+  "license": "MIT"
+}
