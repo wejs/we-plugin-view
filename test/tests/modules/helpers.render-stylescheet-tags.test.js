@@ -17,7 +17,7 @@ describe('helpers.render-stylesheet-tags', function () {
       hash: {}
     });
     assert(html);
-    assert(html.indexOf('<link href="/public/plugin/we-core/files/we.css') === 0);
+    assert(html.indexOf('<link href="/public/plugin/we-plugin-view/files/we.css') === 0);
     done();
   });
 
@@ -28,7 +28,7 @@ describe('helpers.render-stylesheet-tags', function () {
       hash: {}
     });
     assert(html);
-    assert(html.indexOf('<link href="/public/plugin/we-core/files/we.css') === 0);
+    assert(html.indexOf('<link href="/public/plugin/we-plugin-view/files/we.css') === 0);
     done();
   });
 

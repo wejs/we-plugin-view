@@ -30,9 +30,9 @@ module.exports = function(we) {
 
       // render core assets locatization files based in current locale
       if (this.locale && this.locale.substr(0,2) !== 'en') {
-        files.push('/public/plugin/we-core/files/vendor/select2/dist/js/i18n/'+this.locale+'.js');
-        files.push('/public/plugin/we-core/files/vendor/jquery.validate/dist/localization/messages_'+this.locale+'.js');
-        files.push('/public/plugin/we-core/files/vendor/jquery-ui/i18n/datepicker-'+this.locale+'.js');
+        files.push('/public/plugin/we-plugin-view/files/vendor/select2/dist/js/i18n/'+this.locale+'.js');
+        files.push('/public/plugin/we-plugin-view/files/vendor/jquery.validate/dist/localization/messages_'+this.locale+'.js');
+        files.push('/public/plugin/we-plugin-view/files/vendor/jquery-ui/i18n/datepicker-'+this.locale+'.js');
       }
 
       we.events.emit('render-javascript-tags:before:render', {
