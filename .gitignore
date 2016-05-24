@@ -1,4 +1,5 @@
 files/uploads
+test/locales
 files/templatesCacheBuilds.js
 node_modules
 coverage

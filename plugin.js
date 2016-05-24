@@ -248,7 +248,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       } else {
         res.send(res.renderPage(req, res, res.locals.data));
       }
-    });
+    }, 0);
 
     done();
   });
