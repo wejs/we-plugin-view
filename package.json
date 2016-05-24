@@ -1,6 +1,6 @@
 {
   "name": "we-plugin-view",
-  "description": "We.js we-plugin-view plugin",
+  "description": "Add html response format and views with theme system",
   "version": "1.0.0",
   "main": "plugin.js",
   "scripts": {
