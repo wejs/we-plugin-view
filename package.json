@@ -4,7 +4,10 @@
   "version": "1.0.0",
   "main": "plugin.js",
   "scripts": {
-    "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js"
+    "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js",
+    "coverage": "NODE_ENV=test LOG_LV=info node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -u exports -R spec test/bootstrap.js test/**/*.test.js",
+    "preversion": "npm test",
+    "postversion": "git push"
   },
   "keywords": [
     "we.js",
@@ -23,7 +26,7 @@
     "supertest": "^1.0.1",
     "we-core": "wejs/we-core",
     "we-test-tools": "wejs/we-test-tools",
-    "we-theme-site-wejs": "^0.3.31"
+    "we-theme-site-wejs": "wejs/we-theme-site-wejs"
   },
   "repository": "wejs/we-plugin-view",
   "author": "Alberto Souza <contato@albertosouza.net>",

@@ -1,4 +1,5 @@
 files/uploads
+files/templatesCacheBuilds.js
 node_modules
 coverage
 config

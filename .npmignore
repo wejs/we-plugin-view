@@ -1,5 +1,6 @@
 test
 files/uploads
+files/templatesCacheBuilds.js
 .jscsrc
 .jshintignore
 .jshintrc
