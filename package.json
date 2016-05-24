@@ -19,6 +19,7 @@
     "hbs": "4.0.0"
   },
   "devDependencies": {
+    "express-mysql-session": "^1.0.0",
     "fs-extra": "^0.18.2",
     "istanbul": "^0.4.3",
     "mocha": "^2.2.5",
