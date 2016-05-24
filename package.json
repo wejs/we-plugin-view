@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "fs-extra": "^0.18.2",
+    "istanbul": "^0.4.3",
     "mocha": "^2.2.5",
     "rimraf": "^2.3.4",
     "sinon": "^1.17.4",
