@@ -8,13 +8,19 @@ before(function(callback) {
   this.slow(100);
 
   testTools.copyLocalConfigIfNotExitst(projectPath, function() {
-    we = require('we-core');
+    var We = require('we-core');
+    we = new We();
+
     testTools.init({}, we);
 
     we.bootstrap({
       i18n: {
         directory: path.join(__dirname, 'locales'),
         updateFiles: true
+      },
+      themes: {
+        enabled: ['we-theme-site-wejs'],
+        app: 'we-theme-site-wejs'
       }
     } , function(err, we) {
       if (err) throw err;

@@ -4,6 +4,7 @@
 
 var path = require('path');
 var View = require('./lib/View');
+var fs = require('fs');
 
 module.exports = function loadPlugin(projectPath, Plugin) {
   var plugin = new Plugin(__dirname);
@@ -167,11 +168,12 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     'user/layout': __dirname + '/server/templates/user/layout.hbs'
   });
 
-  plugin.events.on('we:after:load:plugins', function (we) {
+  plugin.hooks.on('we:before:load:plugin:features', function (we, done) {
     // view logic
-    we.view = new View(this);
-
+    we.view = new View(we);
     we.view.initialize(we);
+
+    we.view.assets.addCoreAssetsFiles(plugin);
 
     /**
      * Load all plugin template paths
@@ -184,6 +186,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
 
       // load template folders
       we.utils.listFilesRecursive(this.templatesPath, function (err, list){
+        if (err) return cb(err);
 
         for (var i = 0; i < list.length; i++) {
           if (list[i].indexOf('.hbs', list[i].length - 4) >-1) {
@@ -208,7 +211,8 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       var we = this.we;
       var self = this, name, file;
 
-      fs.readdir(this.helpersPath , function (err, list){
+      fs.readdir(this.helpersPath , function afterReadPHelperFolder(err, list) {
+
         if (err) {
           if (err.code === 'ENOENT') return cb();
           return cb(err);
@@ -224,10 +228,10 @@ module.exports = function loadPlugin(projectPath, Plugin) {
             we.view.configuration.helpers[name] = file;
           }
         }
+
         cb();
       });
     }
-
     /**
      * Html response type, rende one page with layout, regions and widgets
      *
@@ -245,9 +249,11 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         res.send(res.renderPage(req, res, res.locals.data));
       }
     });
+
+    done();
   });
 
-  plugin.hooks.trigger('we-core:on:load:template:cache', function (we, next) {
+  plugin.hooks.on('we-core:on:load:template:cache', function (we, next) {
     we.log.verbose('loadTemplateCache step');
     if (!we.view.loadFromCache()) return next();
     we.view.loadTemplatesFromCacheBuild(we, next);
@@ -259,32 +265,45 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     done();
   });
 
-  plugin.hooks.on('plugin:load:features', function(data, done) {
+  plugin.hooks.on('plugin:load:features', function (data, done) {
     var we = data.we;
     var plugin = data.plugin;
 
     we.utils.async.series([
-      function loadTemplates(done) {
+      function loadPluginAssets(done) {
+        var name;
+
+        for (name in plugin.assets.css) {
+          we.view.assets.addCss(name, plugin.assets.css[name])
+        }
+
+        for (name in plugin.assets.js) {
+          we.view.assets.addJs(name, plugin.assets.js[name])
+        }
+
+        done();
+      },
+      function loadPluginTemplates(done) {
         if (we.view.loadFromCache()) return done();
         plugin.loadTemplates(done);
       },
-      plugin.loadHelpers(done),
+      function loadPluginHelpers(done) {
+        plugin.loadHelpers(done);
+      },
       function setPluginLayouts(done) {
-        if (plugin.layouts)
+        if (plugin.layouts) {
           we.utils._.merge(we.view.configuration.layouts, plugin.layouts);
+        }
 
         done();
       }
     ], done);
-    done();
   });
 
-  plugin.events.emit('we:after:load:express', function(we){
+  plugin.events.on('we:after:load:express', function (we){
     // set express config
     we.view.setExpressConfig(we.express, we);
   });
-
-  plugin.assets.addCoreAssetsFiles(plugin);
 
   return plugin;
 };

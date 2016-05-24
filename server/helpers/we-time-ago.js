@@ -3,9 +3,10 @@
  *
  * usage:  {{we-time-ago date locals=locals}}
  */
-var moment = require('moment');
 
-module.exports = function() {
+module.exports = function(we) {
+  var moment = we.utils.moment;
+
   return function datehelper(date) {
     if (!date) return '';
     var options = arguments[arguments.length-1];

@@ -5,11 +5,9 @@
  *
  */
 
-var getAppBootstrapConfig = require('../../lib/staticConfig/getAppBootstrapConfig.js');
-
 module.exports = function(we) {
   return function renderBootstrapConfig() {
-    var configs = getAppBootstrapConfig(we);
+    var configs = we.getAppBootstrapConfig(we);
 
     // set current request locale
     if (this.req && this.req.user && this.req.user.language) {

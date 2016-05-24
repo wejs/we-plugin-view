@@ -4,7 +4,7 @@
  * {{{render-javascript-tags}}}
  */
 
-module.exports = function(we, view) {
+module.exports = function(we) {
   return function renderJavascriptTags(location) {
     var tags = '';
 
@@ -13,18 +13,18 @@ module.exports = function(we, view) {
     }
 
     if (we.env === 'prod' && !we.config.skipCompiledJSFile) {
-      tags += view.assets.themeScriptTag(
+      tags += we.view.assets.themeScriptTag(
         '/public/project/build/prod.'+location+'.js'
       );
     } else {
-      tags += view.assets.getAssetsHTML('js', location);
+      tags += we.view.assets.getAssetsHTML('js', location);
     }
 
     if (location == 'footer') {
         // render theme assets
       var files = [];
       files.push(
-        '/public/theme/'+ view.themes[this.theme].name + view.themes[this.theme].configs.javascript
+        '/public/theme/'+ we.view.themes[this.theme].name + we.view.themes[this.theme].configs.javascript
         .replace('files/public', '')
       );
 
@@ -40,7 +40,7 @@ module.exports = function(we, view) {
       });
 
       for (var i = 0; i < files.length; i++) {
-        tags = tags + view.themeScriptTag(files[i]);
+        tags = tags + we.view.themeScriptTag(files[i]);
       }
     }
 

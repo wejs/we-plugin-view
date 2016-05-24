@@ -2,9 +2,7 @@ var assert = require('assert');
 var request = require('supertest');
 var helpers = require('we-test-tools').helpers;
 var stubs = require('we-test-tools').stubs;
-var _ = require('lodash');
-var http;
-var we;
+var _, http, we;
 
 function widgetStub() {
   return {
@@ -26,6 +24,7 @@ describe('templatesFeature', function() {
   before(function (done) {
     http = helpers.getHttp();
     we = helpers.getWe();
+    _ = we.utils._;
     return done();
   });
 

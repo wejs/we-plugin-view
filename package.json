@@ -12,14 +12,18 @@
     "html",
     "theme"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "hbs": "4.0.0"
+  },
   "devDependencies": {
     "fs-extra": "^0.18.2",
     "mocha": "^2.2.5",
     "rimraf": "^2.3.4",
+    "sinon": "^1.17.4",
     "supertest": "^1.0.1",
     "we-core": "wejs/we-core",
-    "we-test-tools": "wejs/we-test-tools"
+    "we-test-tools": "wejs/we-test-tools",
+    "we-theme-site-wejs": "^0.3.31"
   },
   "repository": "wejs/we-plugin-view",
   "author": "Alberto Souza <contato@albertosouza.net>",

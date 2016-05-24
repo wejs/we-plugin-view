@@ -5,15 +5,9 @@ var sinon = require('sinon');
 var we;
 
 describe('we.responses.formaters', function () {
-  var user;
   before(function (done) {
     we = helpers.getWe();
-    var userStub = stubs.userStub();
-    helpers.createUser(userStub, function(err, u) {
-      if(err) throw err;
-      user = u;
-      done();
-    });
+    done();
   });
 
   describe('html', function () {

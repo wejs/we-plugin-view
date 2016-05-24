@@ -1,13 +1,13 @@
 var assert = require('assert');
 var helpers = require('we-test-tools').helpers;
 var sinon = require('sinon');
-var moment = require('moment');
-var we;
+var moment, we;
 
 describe('coreHelpers', function () {
 
   before(function (done) {
     we = helpers.getWe();
+    moment = we.utils.moment;
     done();
   });
 
