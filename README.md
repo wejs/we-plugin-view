@@ -10,6 +10,10 @@ Add **html** response format and views with **theme** system
 npm install we-plugin-view
 ```
 
+## Documentation:
+
+Link: https://wejs.org/docs/we/theming
+
 ## Links
 
 - We.js site: http://wejs.org
