@@ -168,6 +168,10 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     'user/layout': __dirname + '/server/templates/user/layout.hbs'
   });
 
+  plugin.we.router.title = require('./lib/title');
+  plugin.we.router.metatag = require('./lib/metatag');
+  plugin.we.router.breadcrumb = require('./lib/breadcrumb');
+
   plugin.hooks.on('we:before:load:plugin:features', function (we, done) {
     // view logic
     we.view = new View(we);
@@ -252,6 +256,24 @@ module.exports = function loadPlugin(projectPath, Plugin) {
 
     done();
   });
+
+  plugin.hooks.on('we:router:request:after:load:context', [
+    function runTitleMiddleware(data, done) {
+      // only run on html response
+      if (!data.req.accepts('html')) return done();
+      plugin.we.router.title.middleware(data.req, data.res, done);
+    },
+    function runMetatagMiddleware(data, done) {
+      // only run on html response
+      if (!data.req.accepts('html')) return done();
+      plugin.we.router.metatag.middleware(data.req, data.res, done);
+    },
+    function runBreadcrumbMiddleware(data, done) {
+      // only run on html response
+      if (!data.req.accepts('html')) return done();
+      plugin.we.router.breadcrumb.middleware(data.req, data.res, done);
+    }
+  ]);
 
   plugin.hooks.on('we-core:on:load:template:cache', function (we, next) {
     we.log.verbose('loadTemplateCache step');
