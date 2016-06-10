@@ -894,6 +894,8 @@ window.CustomElements.addModule(function(scope) {
     }
   }
   function createElement(tag, typeExtension) {
+    if (!tag) return;
+
     if (tag) {
       tag = tag.toLowerCase();
     }
