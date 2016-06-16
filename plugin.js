@@ -172,6 +172,25 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   plugin.we.router.metatag = require('./lib/metatag');
   plugin.we.router.breadcrumb = require('./lib/breadcrumb');
 
+
+  /**
+   * Html response type, rende one page with layout, regions and widgets
+   *
+   * If req.query.contentOnly is set only render the page content
+   *
+   * @param  {Object} data
+   * @param  {Object} req  Express.js request
+   * @param  {Object} res  Express.js response
+   * @return {String}      html page
+   */
+  plugin.htmlFormater = function htmlFormater(req, res) {
+    if (req.query.contentOnly) {
+      res.send(req.we.view.renderTemplate(res.locals.template, res.locals.theme, res.locals));
+    } else {
+      res.send(res.renderPage(req, res, res.locals.data));
+    }
+  }
+
   plugin.hooks.on('we:before:load:plugin:features', function (we, done) {
     // view logic
     we.view = new View(we);
@@ -211,11 +230,11 @@ module.exports = function loadPlugin(projectPath, Plugin) {
      * @param  {Object}   we
      * @param  {Function} cb callback
      */
-    we.class.Plugin.prototype.loadHelpers = function loadHelpers(cb) {
+    we.class.Plugin.prototype.loadHelpers = function loadHelpers (cb) {
       var we = this.we;
       var self = this, name, file;
 
-      fs.readdir(this.helpersPath , function afterReadPHelperFolder(err, list) {
+      fs.readdir(this.helpersPath , function afterReadPHelperFolder (err, list) {
 
         if (err) {
           if (err.code === 'ENOENT') return cb();
@@ -236,23 +255,9 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         cb();
       });
     }
-    /**
-     * Html response type, rende one page with layout, regions and widgets
-     *
-     * If req.query.contentOnly is set only render the page content
-     *
-     * @param  {Object} data
-     * @param  {Object} req  Express.js request
-     * @param  {Object} res  Express.js response
-     * @return {String}      html page
-     */
-    we.responses.addResponseFormater('html', function htmlFormater(req, res) {
-      if (req.query.contentOnly) {
-        res.send(req.we.view.renderTemplate(res.locals.template, res.locals.theme, res.locals));
-      } else {
-        res.send(res.renderPage(req, res, res.locals.data));
-      }
-    }, 0);
+    // plug the response formater for text/html response formats
+    we.responses.addResponseFormater('text/html', plugin.htmlFormater, 0);
+    we.responses.addResponseFormater('html', plugin.htmlFormater);
 
     done();
   });
