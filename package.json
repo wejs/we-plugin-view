@@ -1,7 +1,7 @@
 {
   "name": "we-plugin-view",
   "description": "Add html response format and views with theme system",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": "plugin.js",
   "scripts": {
     "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js",
@@ -9,12 +9,6 @@
     "preversion": "npm test",
     "postversion": "git push"
   },
-  "keywords": [
-    "we.js",
-    "view",
-    "html",
-    "theme"
-  ],
   "dependencies": {
     "hbs": "4.0.0"
   },
@@ -33,5 +27,8 @@
   },
   "repository": "wejs/we-plugin-view",
   "author": "Alberto Souza <contato@albertosouza.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "wejs-plugin"
+  ]
 }

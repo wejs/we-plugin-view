@@ -7,7 +7,7 @@ Add **html** response format and views with **theme** system
 ## Installation
 
 ```sh
-npm install we-plugin-view
+we i we-plugin-view
 ```
 
 ## Documentation:
