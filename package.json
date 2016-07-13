@@ -30,5 +30,11 @@
   "license": "MIT",
   "keywords": [
     "wejs-plugin"
-  ]
+  ],
+  "wejs": {
+    "dependencies": {
+      "we-plugin-form": true,
+      "we-plugin-menu": true
+    }
+  }
 }
