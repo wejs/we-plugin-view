@@ -78,6 +78,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
             action: 'edit',
             controller: cfg.controller,
             model: cfg.model,
+            paramIdName: opts.paramIdName,
             template: opts.templateFolderPrefix + opts.name + '/edit',
             fallbackTemplate: plugin.tplFolder + '/default/edit.hbs',
             permission: 'update_' + opts.name,
@@ -97,6 +98,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
             layoutName: opts.layoutName, // null = default layout
             controller: cfg.controller,
             model: cfg.model,
+            paramIdName: opts.paramIdName,
             template: opts.templateFolderPrefix + opts.name + '/edit',
             fallbackTemplate: plugin.tplFolder + '/default/edit.hbs',
             permission: 'update_' + opts.name,
@@ -118,6 +120,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
             layoutName: opts.layoutName, // null = default layout
             controller: cfg.controller,
             model: cfg.model,
+            paramIdName: opts.paramIdName,
             template: opts.templateFolderPrefix + opts.name + '/delete',
             fallbackTemplate: plugin.tplFolder + '/default/delete.hbs',
             permission: 'delete_' + opts.name,
@@ -137,6 +140,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
             layoutName: opts.layoutName, // null = default layout
             controller: cfg.controller,
             model: cfg.model,
+            paramIdName: opts.paramIdName,
             template: opts.templateFolderPrefix + opts.name + '/delete',
             fallbackTemplate:  plugin.tplFolder + '/default/delete.hbs',
             permission: 'delete_' + opts.name,
