@@ -2,17 +2,17 @@ module.exports = {
   /**
    * Index page route /
    */
-  index: function index(req, res) {
+  index(req, res) {
     res.locals.template = 'home/index';
     res.ok();
   },
 
-  findThemes: function findThemes(req, res) {
-    var we = req.we;
+  findThemes(req, res) {
+    const we = req.we;
 
     res.locals.themes = we.view.themes;
     res.locals.themeConfigs = we.config.themes;
 
     res.ok();
   }
-}
+};

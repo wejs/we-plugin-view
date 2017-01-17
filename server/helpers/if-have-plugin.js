@@ -7,10 +7,10 @@
 
 module.exports = function(we) {
   return function helper(pluginName) {
-    var options = arguments[arguments.length-1];
+    const options = arguments[arguments.length-1];
 
     if (we.plugins[pluginName]) return options.fn(this);
 
     return options.inverse(this);
-  }
-}
+  };
+};

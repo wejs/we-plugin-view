@@ -6,14 +6,15 @@
 
 module.exports = function(we) {
   return function paginateHelper() {
-    var options = arguments[arguments.length-1];
-    var theme = options.hash.theme || options.data.root.theme;
-    var reqQuery, params;
+    const options = arguments[arguments.length-1];
+
+    let theme = options.hash.theme || options.data.root.theme,
+       reqQuery, params;
     // old params
     if (options.hash.req) {
       reqQuery = we.utils._.clone(options.hash.req.query);
       delete reqQuery.page;
-      var pt = [];
+      let pt = [];
       for (var param in reqQuery) {
         pt.push(param+'='+reqQuery[param]);
       }
@@ -23,7 +24,7 @@ module.exports = function(we) {
       params = '';
     }
     // pagger var, used in paggination template
-    var pagger = {
+    const pagger = {
       haveMoreBefore: false,
       previus: false,
       links: [],
@@ -41,12 +42,12 @@ module.exports = function(we) {
     if (options.hash.req.res.locals.data)
       pagger.recordsLength = options.hash.req.res.locals.data.length;
 
-    var pageCount = Math.ceil(pagger.count/pagger.limit);
+    let pageCount = Math.ceil(pagger.count/pagger.limit);
     if (!pageCount || pageCount == 1) return '';
 
-    var startInPage = 1;
-    var endInPage = pageCount;
-    var totalLinks = (pagger.maxLinks*2) +1;
+    let startInPage = 1;
+    let endInPage = pageCount;
+    let totalLinks = (pagger.maxLinks*2) +1;
 
     if ( totalLinks < pageCount ) {
       // check if have more before
@@ -55,7 +56,7 @@ module.exports = function(we) {
         pagger.first = {
           p: '?page='+1+params,
           n: 1
-        }
+        };
         pagger.haveMoreBefore = true;
       }
 
@@ -64,13 +65,13 @@ module.exports = function(we) {
         pagger.last = {
           p: '?page='+pageCount+params,
           n: pageCount
-        }
+        };
         pagger.haveMoreAfter = true;
       }
     }
 
     // each link
-    for (var i = startInPage; i <= endInPage; i++) {
+    for (let i = startInPage; i <= endInPage; i++) {
       pagger.links.push({
         p: '?page='+i+params,
         n: i,
@@ -82,18 +83,18 @@ module.exports = function(we) {
       pagger.previus = {
         p: '?page='+(pagger.currentPage-1)+params,
         n: (pagger.currentPage-1),
-      }
+      };
     }
 
     if (pagger.currentPage < pageCount) {
       pagger.next = {
         p: '?page='+(pagger.currentPage+1)+params,
         n: (pagger.currentPage+1),
-      }
+      };
     }
 
     return new we.hbs.SafeString(
       we.view.renderTemplate('paginate', theme, pagger)
     );
   };
-}
+};

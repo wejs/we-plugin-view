@@ -35,25 +35,5 @@ before(function(callback) {
 
 //after all tests
 after(function (callback) {
-  we.db.defaultConnection.close();
-
-  var tempFolders = [
-    projectPath + '/files/tmp',
-    projectPath + '/files/config',
-    projectPath + '/files/sqlite',
-
-    projectPath + '/files/public/min',
-
-    projectPath + '/files/public/project.css',
-    projectPath + '/files/public/project.js',
-    projectPath + '/config/local.js',
-  ];
-
-  we.utils.async.each(tempFolders, function(folder, next){
-    deleteDir( folder, next);
-  }, function(err) {
-    if (err) throw new Error(err);
-    callback();
-  })
-
+  we.exit(callback);
 });

@@ -4,13 +4,13 @@
  * usage: {{{render-client-component-templates}}}
  *
  */
-var hbs = require('hbs');
+const hbs = require('hbs');
 
 module.exports = function(we) {
   return function renderClientComponentTemplates() {
-    var html = '<div class="we-components-area">';
+    let html = '<div class="we-components-area">';
 
-    for (var t in we.config.clientComponentTemplates) {
+    for (let t in we.config.clientComponentTemplates) {
       if (!we.config.clientComponentTemplates[t]) continue;
 
       html += we.view.renderTemplate(t, this.theme, this);
@@ -19,5 +19,5 @@ module.exports = function(we) {
     html += '</div>';
 
     return new hbs.SafeString(html);
-  }
-}
+  };
+};

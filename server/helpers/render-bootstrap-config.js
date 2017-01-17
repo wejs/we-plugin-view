@@ -7,7 +7,7 @@
 
 module.exports = function(we) {
   return function renderBootstrapConfig() {
-    var configs = we.getAppBootstrapConfig(we);
+    const configs = we.getAppBootstrapConfig(we);
 
     // set current request locale
     if (this.req && this.req.user && this.req.user.language) {
@@ -32,9 +32,9 @@ module.exports = function(we) {
       context: this
     });
 
-    var tags = '<script type="text/javascript"> window.WE_BOOTSTRAP_CONFIG=';
+    let tags = '<script type="text/javascript"> window.WE_BOOTSTRAP_CONFIG=';
     tags += JSON.stringify(configs);
     tags += '</script>';
     return new we.hbs.SafeString(tags);
-  }
-}
+  };
+};

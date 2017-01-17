@@ -6,8 +6,8 @@
 
 module.exports = function(we) {
   return function rendertemplate(name) {
-    var opts = arguments[arguments.length-1];
-    var ctx;
+    const opts = arguments[arguments.length-1];
+    let ctx;
     // find context to get theme name
     if (opts.hash && opts.hash.locals) {
       ctx = opts.hash.locals;
@@ -19,10 +19,10 @@ module.exports = function(we) {
       we.log.verbose('we-plugin-view:helper:locals not found');
       return '';
     }
-    var theme = (opts.hash.theme || ctx.theme);
+    let theme = (opts.hash.theme || ctx.theme);
     // if not find the theme name get default themes
     if (!theme) theme = we.view.themes[we.view.appTheme];
     // render the template
     return new we.hbs.SafeString(we.view.renderTemplate(name, theme, ctx));
-  }
-}
+  };
+};

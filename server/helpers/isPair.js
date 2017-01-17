@@ -9,10 +9,10 @@
  */
 module.exports = function() {
   return function isPairHelper(index) {
-    var options = arguments[arguments.length-1];
+    const options = arguments[arguments.length-1];
     if ( (index % 2) === 0) {
       return options.fn(this);
     }
     return options.inverse(this);
-  }
-}
+  };
+};

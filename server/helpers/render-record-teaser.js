@@ -6,7 +6,7 @@
 
 module.exports = function(we) {
   return function renderRecordTeaser() {
-    var options = arguments[arguments.length-1];
+    const options = arguments[arguments.length-1];
 
     if (
       !options.hash.record ||
@@ -23,5 +23,5 @@ module.exports = function(we) {
         locals: options.hash.locals
       }
     ));
-  }
-}
+  };
+};

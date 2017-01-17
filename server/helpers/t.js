@@ -7,8 +7,8 @@
  */
 module.exports = function(we) {
   return function tHelper(string) {
-    var options = arguments[arguments.length-1];
-    var attr, __;
+    const options = arguments[arguments.length-1];
+    let attr, __;
 
     if (arguments.length == 3) attr = arguments[1];
 
@@ -32,5 +32,5 @@ module.exports = function(we) {
     } else {
       return __(string[attr], options.hash);
     }
-  }
-}
+  };
+};

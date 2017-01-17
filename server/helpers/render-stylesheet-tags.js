@@ -7,7 +7,7 @@
 
 module.exports = function(we, view) {
   return function renderStylesheetTags(location) {
-    var tags = '';
+    let tags = '';
 
     if (!location || (typeof location != 'string') ) {
       location = 'header';
@@ -23,16 +23,16 @@ module.exports = function(we, view) {
 
     if (location == 'header') {
         // render theme assets
-      var files = [];
+      let files = [];
       files.push(
         '/public/theme/'+ view.themes[this.theme].name + view.themes[this.theme].configs.stylesheet
         .replace('files/public', '')
       );
-      for (var i = 0; i < files.length; i++) {
+      for (let i = 0; i < files.length; i++) {
         tags = tags + view.themeStylesheetTag(files[i]);
       }
     }
 
     return tags;
-  }
-}
+  };
+};

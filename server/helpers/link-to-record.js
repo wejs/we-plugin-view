@@ -7,18 +7,18 @@
 
 module.exports = function(we) {
   return function linkTo() {
-    var options = arguments[arguments.length-1];
+    const options = arguments[arguments.length-1];
 
     if (!options.hash.record) return '';
 
-    var href = options.hash.record.getUrlPathAlias();
+    const href = options.hash.record.getUrlPathAlias();
 
-    var attributes = we.utils.helper.parseAttributes(options);
+    const attributes = we.utils.helper.parseAttributes(options);
 
-    var l = '<a href="' + href + '" ' + attributes + ' >';
+    let l = '<a href="' + href + '" ' + attributes + ' >';
       l += options.fn(this);
     l += '</a>';
 
     return new we.hbs.SafeString(l);
-  }
-}
+  };
+};

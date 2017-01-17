@@ -6,14 +6,14 @@
 
 module.exports = function(we) {
   return function weStripTagsHelper() {
-    var options = arguments[arguments.length-1];
+    const options = arguments[arguments.length-1];
     if (!options.hash.text) return '';
 
-    var text = we.utils.string(options.hash.text).stripTags();
+    let text = we.utils.string(options.hash.text).stripTags();
 
     if (options.hash.maxLength)
       text = text.truncate(options.hash.maxLength);
 
     return text.s;
-  }
-}
+  };
+};

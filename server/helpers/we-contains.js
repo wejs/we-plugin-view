@@ -16,5 +16,5 @@ module.exports = function() {
       return options.fn(this);
     }
     return options.inverse(this);
-  }
-}
+  };
+};

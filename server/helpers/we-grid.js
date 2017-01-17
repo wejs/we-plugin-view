@@ -5,18 +5,18 @@
  */
 module.exports = function(we) {
   return function gridHelper() {
-    var options = arguments[arguments.length-1];
-    var items = options.hash.items;
-    var cols = options.hash.cols || 3;
-    var colsPerRow = cols;
+    const options = arguments[arguments.length-1];
+    let items = options.hash.items,
+       cols = options.hash.cols || 3,
+      colsPerRow = cols;
     // bootstrap col size
-    var bsColSize = (parseInt(12/cols));
+    const bsColSize = (parseInt(12/cols));
 
     if (!items) return new we.hbs.SafeString(options.inverse(this));
 
-    var html = '', rowInit = true;
+    let html = '', rowInit = true;
 
-    for (var i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       if (rowInit) {
         html += '<div class="row we-grid-row">';
         rowInit = false;
@@ -36,5 +36,5 @@ module.exports = function(we) {
     if (!rowInit) html += '</div>';
 
     return new we.hbs.SafeString(html);
-  }
-}
+  };
+};

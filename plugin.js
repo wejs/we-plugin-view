@@ -2,12 +2,13 @@
  * Views and themes plugin main file
  */
 
-var path = require('path');
-var View = require('./lib/View');
-var fs = require('fs');
+const path = require('path'),
+  View = require('./lib/View'),
+  fs = require('fs');
 
 module.exports = function loadPlugin(projectPath, Plugin) {
-  var plugin = new Plugin(__dirname);
+  const plugin = new Plugin(__dirname);
+
   plugin.tplFolder = path.resolve(__dirname, 'server/templates/');
 
   plugin.setConfigs({
@@ -28,7 +29,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     // add html pages to resources
     resourceRoutes: {
       // pages
-      createForm: function createFormRR(we, cfg, opts) {
+      createForm(we, cfg, opts) {
         // GET
         we.routes['get '+opts.rootRoute+'/create'] = we.utils._.merge(
           {
@@ -67,7 +68,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
           we.routes['post '+opts.rootRoute+'/create'] || {}
         );
       },
-      editForm: function editFormRR(we, cfg, opts, Model) {
+      editForm(we, cfg, opts, Model) {
         // GET
         we.routes['get '+opts.itemRoute+'/edit'] = we.utils._.merge(
           {
@@ -108,7 +109,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
           we.routes['post '+opts.itemRoute+'/edit'] || {}
         );
       },
-      deleteForm: function deleteFormRR(we, cfg, opts, Model) {
+      deleteForm(we, cfg, opts, Model) {
         we.routes['get '+opts.itemRoute+'/delete'] = we.utils._.merge(
           {
             resourceName: opts.namePrefix+opts.name,
@@ -189,7 +190,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     } else {
       res.send(res.renderPage(req, res, res.locals.data));
     }
-  }
+  };
 
   plugin.hooks.on('we:before:load:plugin:features', function (we, done) {
     // view logic
@@ -204,14 +205,16 @@ module.exports = function loadPlugin(projectPath, Plugin) {
      * Runs in we.js bootstrap
      */
     we.class.Plugin.prototype.loadTemplates = function loadTemplates (cb) {
-      var we = this.we;
-      var self = this, templateName;
+      const we = this.we,
+        self = this;
+
+      let templateName;
 
       // load template folders
-      we.utils.listFilesRecursive(this.templatesPath, function (err, list){
+      we.utils.listFilesRecursive(this.templatesPath,  (err, list)=> {
         if (err) return cb(err);
 
-        for (var i = 0; i < list.length; i++) {
+        for (let i = 0; i < list.length; i++) {
           if (list[i].indexOf('.hbs', list[i].length - 4) >-1) {
             templateName = list[i].substring(0, list[i].length-4).substring(self.templatesPath.length+1);
             // ensures that template names always have / slashes
@@ -223,7 +226,8 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         }
         cb();
       });
-    }
+    };
+
     /**
      * Load helpers from folder server/helpers
      *
@@ -231,8 +235,10 @@ module.exports = function loadPlugin(projectPath, Plugin) {
      * @param  {Function} cb callback
      */
     we.class.Plugin.prototype.loadHelpers = function loadHelpers (cb) {
-      var we = this.we;
-      var self = this, name, file;
+      const we = this.we,
+        self = this;
+
+      let name, file;
 
       fs.readdir(this.helpersPath , function afterReadPHelperFolder (err, list) {
 
@@ -241,7 +247,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
           return cb(err);
         }
 
-        for (var i = 0; i < list.length; i++) {
+        for (let i = 0; i < list.length; i++) {
           if (list[i].indexOf('.js', list[i].length - 3) >-1) {
 
             name = list[i].substring(0, list[i].length-3);
@@ -254,7 +260,8 @@ module.exports = function loadPlugin(projectPath, Plugin) {
 
         cb();
       });
-    }
+    };
+
     // plug the response formater for text/html response formats
     we.responses.addResponseFormater('text/html', plugin.htmlFormater, 0);
     we.responses.addResponseFormater('html', plugin.htmlFormater);
@@ -293,19 +300,19 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   });
 
   plugin.hooks.on('plugin:load:features', function (data, done) {
-    var we = data.we;
-    var plugin = data.plugin;
+    const we = data.we,
+      plugin = data.plugin;
 
     we.utils.async.series([
       function loadPluginAssets(done) {
         var name;
 
         for (name in plugin.assets.css) {
-          we.view.assets.addCss(name, plugin.assets.css[name])
+          we.view.assets.addCss(name, plugin.assets.css[name]);
         }
 
         for (name in plugin.assets.js) {
-          we.view.assets.addJs(name, plugin.assets.js[name])
+          we.view.assets.addJs(name, plugin.assets.js[name]);
         }
 
         done();
@@ -327,7 +334,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     ], done);
   });
 
-  plugin.events.on('we:after:load:express', function (we){
+  plugin.events.on('we:after:load:express', function (we) {
     // set express config
     we.view.setExpressConfig(we.express, we);
   });

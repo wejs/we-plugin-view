@@ -15,5 +15,5 @@ module.exports = function(we) {
     } else {
       return '';
     }
-  }
-}
+  };
+};

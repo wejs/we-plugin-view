@@ -5,17 +5,17 @@
  */
 
 module.exports = function(we) {
-  var moment = we.utils.moment;
+  const moment = we.utils.moment;
 
   return function datehelper(date) {
     if (!date) return '';
-    var options = arguments[arguments.length-1];
+    const options = arguments[arguments.length-1];
     // get a instance of moment time ago
-    var d = moment(date);
+    let d = moment(date);
     // check if is valid
     if (!d.isValid()) return '';
 
-    var req;
+    let req;
     // get req
     if (options.hash && options.hash.locals) {
       req = options.hash.locals.req;
@@ -28,5 +28,5 @@ module.exports = function(we) {
     if (req && req.user) d.locale(req.user.language);
 
     return d.fromNow();
-  }
-}
+  };
+};
