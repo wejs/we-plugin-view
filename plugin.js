@@ -11,6 +11,30 @@ module.exports = function loadPlugin(projectPath, Plugin) {
 
   plugin.tplFolder = path.resolve(__dirname, 'server/templates/');
 
+  plugin.fastLoader = function fastLoader(we, done) {
+    // controllers:
+    we.controllers.admin = new we.class.Controller({
+      /**
+       * Index page route /
+       */
+      index(req, res) {
+        res.locals.template = 'home/index';
+        res.ok();
+      },
+
+      findThemes(req, res) {
+        const we = req.we;
+
+        res.locals.themes = we.view.themes;
+        res.locals.themeConfigs = we.config.themes;
+
+        res.ok();
+      }
+    });
+
+    done();
+  };
+
   plugin.setConfigs({
     // // theme configs
     themes: {
