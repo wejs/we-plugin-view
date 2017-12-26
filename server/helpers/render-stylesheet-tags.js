@@ -2,7 +2,6 @@
  * Render theme stylesheet
  *
  * usage: {{{render-stylesheet-tags}}}
- *
  */
 
 module.exports = function(we, view) {
@@ -24,10 +23,10 @@ module.exports = function(we, view) {
     if (location == 'header') {
         // render theme assets
       let files = [];
-      files.push(
-        '/public/theme/'+ view.themes[this.theme].name + view.themes[this.theme].configs.stylesheet
-        .replace('files/public', '')
-      );
+      const tst = view.getThemeStyle(we, this.theme, view, this);
+
+      files.push('/public/theme/'+ view.themes[this.theme].name+tst);
+
       for (let i = 0; i < files.length; i++) {
         tags = tags + view.themeStylesheetTag(files[i]);
       }
