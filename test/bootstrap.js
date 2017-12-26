@@ -34,6 +34,6 @@ before(function(callback) {
 });
 
 //after all tests
-after(function (callback) {
-  we.exit(callback);
+after(function () {
+  we.exit(process.exit);
 });
