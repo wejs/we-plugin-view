@@ -15,14 +15,17 @@ module.exports = function(we) {
       reqQuery = we.utils._.clone(options.hash.req.query);
       delete reqQuery.page;
       let pt = [];
-      for (var param in reqQuery) {
+      for (let param in reqQuery) {
         pt.push(param+'='+reqQuery[param]);
       }
       params = pt.join('&');
       if (params) params = '&'+params;
     } else {
-      params = '';
+      return '';
     }
+
+    let currentUrl = options.hash.req.url.split('?')[0].split('#')[0];
+
     // pagger var, used in paggination template
     const pagger = {
       haveMoreBefore: false,
@@ -39,8 +42,9 @@ module.exports = function(we) {
       locals: options.hash.req.res.locals
     };
 
-    if (options.hash.req.res.locals.data)
+    if (options.hash.req.res.locals.data) {
       pagger.recordsLength = options.hash.req.res.locals.data.length;
+    }
 
     let pageCount = Math.ceil(pagger.count/pagger.limit);
     if (!pageCount || pageCount == 1) return '';
@@ -54,7 +58,7 @@ module.exports = function(we) {
       if ((pagger.maxLinks+2) < pagger.currentPage) {
         startInPage = pagger.currentPage - pagger.maxLinks;
         pagger.first = {
-          p: '?page='+1+params,
+          p: currentUrl+'?page='+1+params,
           n: 1
         };
         pagger.haveMoreBefore = true;
@@ -63,7 +67,7 @@ module.exports = function(we) {
       if ( (pagger.maxLinks+pagger.currentPage+1) < pageCount ) {
         endInPage = pagger.maxLinks+pagger.currentPage;
         pagger.last = {
-          p: '?page='+pageCount+params,
+          p: currentUrl+'?page='+pageCount+params,
           n: pageCount
         };
         pagger.haveMoreAfter = true;
@@ -73,7 +77,7 @@ module.exports = function(we) {
     // each link
     for (let i = startInPage; i <= endInPage; i++) {
       pagger.links.push({
-        p: '?page='+i+params,
+        p: currentUrl+'?page='+i+params,
         n: i,
         active: ( i == pagger.currentPage )
       });
@@ -81,14 +85,14 @@ module.exports = function(we) {
 
     if (pagger.currentPage > 1) {
       pagger.previus = {
-        p: '?page='+(pagger.currentPage-1)+params,
+        p: currentUrl+'?page='+(pagger.currentPage-1)+params,
         n: (pagger.currentPage-1),
       };
     }
 
     if (pagger.currentPage < pageCount) {
       pagger.next = {
-        p: '?page='+(pagger.currentPage+1)+params,
+        p: currentUrl+'?page='+(pagger.currentPage+1)+params,
         n: (pagger.currentPage+1),
       };
     }
