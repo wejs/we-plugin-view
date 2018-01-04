@@ -7,11 +7,15 @@
 module.exports = function(we) {
   return function paginateHelper() {
     const options = arguments[arguments.length-1];
-
+    let currentUrl = '';
     let theme = options.hash.theme || options.data.root.theme,
        reqQuery, params;
     // old params
     if (options.hash.req) {
+      if (options.hash.req.url && options.hash.req.url.split) {
+        currentUrl = options.hash.req.url.split('?')[0].split('#')[0];
+      }
+
       reqQuery = we.utils._.clone(options.hash.req.query);
       delete reqQuery.page;
       let pt = [];
@@ -23,8 +27,6 @@ module.exports = function(we) {
     } else {
       return '';
     }
-
-    let currentUrl = options.hash.req.url.split('?')[0].split('#')[0];
 
     // pagger var, used in paggination template
     const pagger = {
