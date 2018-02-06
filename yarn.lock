@@ -1198,6 +1198,10 @@ nise@^1.2.0:
     path-to-regexp "^1.7.0"
     text-encoding "^0.6.4"
 
+node-stream-zip@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/node-stream-zip/-/node-stream-zip-1.4.2.tgz#9631d25ad8b48103ba8d3e86ec12cadf8f406453"
+
 nopt@3.x, nopt@~3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-3.0.6.tgz#c6465dbf08abcd4db359317f79ac68a646b28ff9"

@@ -29,6 +29,81 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         res.locals.themeConfigs = we.config.themes;
 
         res.ok();
+      },
+
+      getAllThemes(req, res) {
+        const we = req.we;
+
+        res.locals.themes = we.view.themes;
+        res.locals.themeConfigs = we.config.themes;
+
+        let themes = {};
+
+        for(let name in res.locals.themes) {
+          if (!res.locals.themes[name].description) continue;
+
+          themes[name] = {
+            name: name,
+            imageThumbnail: res.locals.themes[name].imageThumbnail,
+            imageLarge: res.locals.themes[name].imageLarge,
+            description: res.locals.themes[name].description,
+            configs: res.locals.themes[name].configs
+          };
+        }
+
+        let firstThemeName;
+        if (res.locals.themes && res.locals.themes[0]) {
+          firstThemeName = res.locals.themes[0].name;
+        }
+
+        res.ok({
+          themes: themes,
+          enabled: we.systemSettings.siteTheme || firstThemeName
+        });
+      },
+
+      installTheme(req, res, next) {
+        const we = req.we;
+        // req.params.name
+        // req.body.colorName
+
+      // req.body.release
+
+        if (!req.body.release) {
+          return req.badRequest('admin:installTheme:Release is required');
+        }
+
+        if (we.view.isThemeInstalled(req.params.name)) {
+          return we.controllers.admin.enableTheme(req, res, next);
+        }
+
+        we.view.downloadAndInstallTheme(req.params.name, req.body.release, (err)=> {
+          if (err) return res.queryError(err);
+
+          res.addMessage('success', {
+            text: 'admin:installTheme.success'
+          });
+
+          res.ok();
+        });
+      },
+
+      enableTheme(req, res) {
+        const we = req.we;
+
+        if (!req.body.release) {
+          return req.badRequest('admin:installTheme:Release is required');
+        }
+
+        we.view.enableTheme(req.params.name, (err)=> {
+          if (err) return res.queryError(err);
+
+          res.addMessage('success', {
+            text: 'admin:enableTheme.success'
+          });
+
+          res.ok();
+        });
       }
     });
 
@@ -45,8 +120,10 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       // default admin theme
       admin: null
     },
+    themeAutoloadFolder: path.resolve(projectPath, 'server/themes'),
     clientComponentTemplates: { 'components-core': true },
     templatesCacheFile: path.resolve(projectPath, 'files/templatesCacheBuilds.js'),
+    cacheThemeTemplates: false, //
     loadTemplatesFromCache: {
       prod: true, dev: false, test: false
     },
@@ -189,6 +266,17 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       'action'        : 'findThemes',
       'template'      : 'admin/theme/index',
       'permission'    : 'manage_theme'
+    },
+    'post /admin/theme/:name/install': {
+      'controller'    : 'admin',
+      'action'        : 'installTheme',
+      'response'      : 'json',
+      'permission'    : 'manage_theme'
+    },
+    'get /theme': {
+      controller: 'admin',
+      action: 'getAllThemes',
+      responseType: 'json'
     }
   });
 
@@ -366,6 +454,9 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     // set express config
     we.view.setExpressConfig(we.express, we);
   });
+
+  // theme autoload feature:
+
 
   return plugin;
 };
