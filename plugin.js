@@ -66,8 +66,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         const we = req.we;
         // req.params.name
         // req.body.colorName
-
-      // req.body.release
+        // req.body.release
 
         if (!req.body.release) {
           return req.badRequest('admin:installTheme:Release is required');
@@ -80,11 +79,29 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         we.view.downloadAndInstallTheme(req.params.name, req.body.release, (err)=> {
           if (err) return res.queryError(err);
 
-          res.addMessage('success', {
-            text: 'admin:installTheme.success'
-          });
+          const activeThemes = Object.keys(we.view.themes).join('|');
 
-          res.ok();
+          req.we.plugins['we-plugin-db-system-settings']
+          .setConfigs({
+            activeThemes: activeThemes,
+            siteTheme: req.params.name,
+            [ req.params.name + 'ColorName' ]: (req.body.colorName || 'default')
+          }, (err, updatedSettings)=> {
+            if (err) return res.queryError(err);
+
+            res.addMessage('success', {
+              text: 'admin:installTheme.success'
+            });
+
+            res.locals.data = {
+              updatedSettings: updatedSettings
+            };
+
+            // small timeout to wait system settings lifecircle that will enable this theme in all running instances:
+            setTimeout( ()=> {
+              res.ok();
+            }, 200);
+          });
         });
       },
 
@@ -98,11 +115,23 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         we.view.enableTheme(req.params.name, (err)=> {
           if (err) return res.queryError(err);
 
-          res.addMessage('success', {
-            text: 'admin:enableTheme.success'
-          });
+          req.we.plugins['we-plugin-db-system-settings']
+          .setConfigs({
+            siteTheme: req.params.name,
+            [ req.params.name + 'ColorName' ]: (req.body.colorName || 'default')
+          }, (err, updatedSettings)=> {
+            if (err) return res.queryError(err);
 
-          res.ok();
+            res.addMessage('success', {
+              text: 'admin:enableTheme.success'
+            });
+
+            res.locals.metadata = {
+              updatedSettings: updatedSettings
+            };
+
+            res.ok();
+          });
         });
       }
     });
@@ -270,8 +299,8 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     'post /admin/theme/:name/install': {
       'controller'    : 'admin',
       'action'        : 'installTheme',
+      'permission'    : 'manage_theme',
       'response'      : 'json',
-      'permission'    : 'manage_theme'
     },
     'get /theme': {
       controller: 'admin',
@@ -455,8 +484,27 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     we.view.setExpressConfig(we.express, we);
   });
 
-  // theme autoload feature:
+  plugin.events.on('system-settings:updated:after', (we)=> {
+    if (we.systemSettings.activeThemes != we.view.systemSettingsActiveThemes) {
+      // active themes updated!
+      let themes = [];
+      if (we.systemSettings.activeThemes) {
+        themes = we.systemSettings.activeThemes.split('|');
+      }
 
+      let themesToLoad = [];
+
+      themes.forEach( (t)=> {
+        if (!we.view.themes[t]) themesToLoad.push(t);
+      });
+
+      we.utils.async.each(themes, (name, done)=> {
+        we.view.loadTheme(name, done);
+      }, ()=> {
+        we.view.systemSettingsActiveThemes = we.systemSettings.activeThemes;
+      });
+    }
+  });
 
   return plugin;
 };
