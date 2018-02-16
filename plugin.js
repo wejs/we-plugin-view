@@ -105,6 +105,45 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         });
       },
 
+      updateTheme(req, res) {
+        const we = req.we;
+
+        if (!we.systemSettings.themesToUpdate) return res.ok();
+
+        let themesToUpdate = JSON.parse(we.systemSettings.themesToUpdate);
+
+        if (!themesToUpdate[req.params.name]) return res.ok();
+
+        we.view.downloadAndInstallTheme(req.params.name, req.body.release, (err)=> {
+          if (err) return res.queryError(err);
+
+          delete themesToUpdate[req.params.name];
+
+          if (!Object.keys(themesToUpdate).length) {
+            themesToUpdate = null;
+          }
+
+          req.we.plugins['we-plugin-db-system-settings']
+          .setConfigs({
+            themesToUpdate: themesToUpdate
+          }, (err)=> {
+            if (err) return res.queryError(err);
+
+            res.addMessage('success', {
+              text: 'admin:updateTheme.success'
+            });
+
+            setTimeout( ()=> {
+              res.ok({
+                x: 'y',
+                themesToUpdate: themesToUpdate
+              });
+            }, 200);
+
+          });
+        });
+      },
+
       enableTheme(req, res) {
         const we = req.we;
 
@@ -296,9 +335,16 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       'template'      : 'admin/theme/index',
       'permission'    : 'manage_theme'
     },
+
     'post /admin/theme/:name/install': {
       'controller'    : 'admin',
       'action'        : 'installTheme',
+      'permission'    : 'manage_theme',
+      'response'      : 'json',
+    },
+    'post /admin/theme/:name/update': {
+      'controller'    : 'admin',
+      'action'        : 'updateTheme',
       'permission'    : 'manage_theme',
       'response'      : 'json',
     },
@@ -505,6 +551,44 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       });
     }
   });
+
+  plugin.events.on('system-settings:updated:after', (we)=> {
+    if (we.systemSettings.themesToUpdate != we.view.themesToUpdate) {
+      if (!we.view.themesToUpdate) {
+        // found themes to update but not updated:
+        we.view.themesToUpdate = we.systemSettings.themesToUpdate;
+        return null;
+      }
+
+      if (!we.systemSettings.themesToUpdate) {
+        // all themes updated!
+        let old = JSON.parse(we.view.themesToUpdate);
+
+        let updatedNames = Object.keys(old);
+
+        we.utils.async.each(updatedNames, (name, done)=> {
+          we.view.loadTheme(name, done);
+        }, ()=> {
+          we.view.themesToUpdate = null;
+        });
+
+      } else {
+        // some themes updated!
+        let allToUpdate = JSON.parse(we.systemSettings.themesToUpdate); // new
+        let old = JSON.parse(we.view.themesToUpdate); // old
+
+        let updatedNames = Object.keys(old);
+
+        we.utils.async.each(updatedNames, (name, done)=> {
+          if (allToUpdate[name]) return done(); // this theme not is updated
+          we.view.loadTheme(name, done); // load updated theme
+        }, ()=> {
+          we.view.themesToUpdate = we.systemSettings.themesToUpdate;
+        });
+      }
+    }
+  });
+
 
   return plugin;
 };
