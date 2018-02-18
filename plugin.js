@@ -531,6 +531,10 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   });
 
   plugin.events.on('system-settings:updated:after', (we)=> {
+    if (we.systemSettings.siteTheme) {
+      we.view.appTheme = we.systemSettings.siteTheme;
+    }
+
     if (we.systemSettings.activeThemes != we.view.systemSettingsActiveThemes) {
       // active themes updated!
       let themes = [];
@@ -544,7 +548,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         if (!we.view.themes[t]) themesToLoad.push(t);
       });
 
-      we.utils.async.each(themes, (name, done)=> {
+      we.utils.async.each(themesToLoad, (name, done)=> {
         we.view.loadTheme(name, done);
       }, ()=> {
         we.view.systemSettingsActiveThemes = we.systemSettings.activeThemes;
