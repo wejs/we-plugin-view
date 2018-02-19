@@ -478,12 +478,6 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     }
   ]);
 
-  plugin.hooks.on('we-core:on:load:template:cache', function (we, next) {
-    we.log.verbose('loadTemplateCache step');
-    if (!we.view.loadFromCache()) return next();
-    we.view.loadTemplatesFromCacheBuild(we, next);
-  });
-
   plugin.hooks.on('we-core:on:register:templates', function (we, done) {
     we.log.verbose('registerAllViewTemplates step');
     we.view.registerAll();
@@ -509,7 +503,6 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         done();
       },
       function loadPluginTemplates(done) {
-        if (we.view.loadFromCache()) return done();
         plugin.loadTemplates(done);
       },
       function loadPluginHelpers(done) {
