@@ -125,7 +125,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
 
           req.we.plugins['we-plugin-db-system-settings']
           .setConfigs({
-            themesToUpdate: themesToUpdate
+            themesToUpdate: JSON.stringify(themesToUpdate || {})
           }, (err)=> {
             if (err) return res.queryError(err);
 
@@ -135,7 +135,6 @@ module.exports = function loadPlugin(projectPath, Plugin) {
 
             setTimeout( ()=> {
               res.ok({
-                x: 'y',
                 themesToUpdate: themesToUpdate
               });
             }, 200);
