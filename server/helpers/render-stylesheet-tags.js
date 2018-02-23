@@ -7,6 +7,11 @@
 module.exports = function(we, view) {
   return function renderStylesheetTags(location) {
     let tags = '';
+    /* theme version */
+    let tv = '';
+    if (view.themes[this.theme]) {
+      tv = '&tv='+view.themes[this.theme].version;
+    }
 
     if (!location || (typeof location != 'string') ) {
       location = 'header';
@@ -28,7 +33,7 @@ module.exports = function(we, view) {
       files.push('/public/theme/'+ view.themes[this.theme].name+tst);
 
       for (let i = 0; i < files.length; i++) {
-        tags = tags + view.themeStylesheetTag(files[i]);
+        tags = tags + view.themeStylesheetTag(files[i], tv);
       }
     }
 

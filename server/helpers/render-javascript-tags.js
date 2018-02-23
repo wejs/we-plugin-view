@@ -4,27 +4,32 @@
  * {{{render-javascript-tags}}}
  */
 
-module.exports = function(we) {
+module.exports = function(we, view) {
   return function renderJavascriptTags(location) {
     let tags = '';
+    /* theme version */
+    let tv = '';
+    if (view.themes[this.theme]) {
+      tv = '&tv='+view.themes[this.theme].version;
+    }
 
     if (!location || typeof location !== 'string') {
       location = 'footer';
     }
 
     if (we.env === 'prod' && !we.config.skipCompiledJSFile) {
-      tags += we.view.assets.themeScriptTag(
-        '/public/project/build/prod.'+location+'.js'
+      tags += view.assets.themeScriptTag(
+        '/public/project/build/prod.'+location+'.js', tv
       );
     } else {
-      tags += we.view.assets.getAssetsHTML('js', location);
+      tags += view.assets.getAssetsHTML('js', location);
     }
 
     if (location == 'footer') {
         // render theme assets
       let files = [];
       files.push(
-        '/public/theme/'+ we.view.themes[this.theme].name + we.view.themes[this.theme].configs.javascript
+        '/public/theme/'+ view.themes[this.theme].name + view.themes[this.theme].configs.javascript
         .replace('files/public', '')
       );
 
@@ -40,7 +45,7 @@ module.exports = function(we) {
       });
 
       for (let i = 0; i < files.length; i++) {
-        tags = tags + we.view.themeScriptTag(files[i]);
+        tags = tags + view.themeScriptTag(files[i], tv);
       }
     }
 
