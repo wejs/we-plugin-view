@@ -174,6 +174,8 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       }
     });
 
+    we.controllers.adminTheme = new we.class.Controller(require('./server/controllers/adminTheme.js'));
+
     done();
   };
 
@@ -187,6 +189,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       // default admin theme
       admin: null
     },
+    themeUpdateURL: 'https://shop.linkysystems.com/project-theme-verify-update',
     themeAutoloadFolder: path.resolve(projectPath, 'server/themes'),
     clientComponentTemplates: { 'components-core': true },
     templatesCacheFile: path.resolve(projectPath, 'files/templatesCacheBuilds.js'),
@@ -339,13 +342,19 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       'controller'    : 'admin',
       'action'        : 'installTheme',
       'permission'    : 'manage_theme',
-      'response'      : 'json',
+      'responseType'      : 'json',
+    },
+    'post /admin/theme-verify-updates': {
+      'controller'    : 'adminTheme',
+      'action'        : 'verifyAllThemesUpdate',
+      'permission'    : true, // this is verified in controller
+      'responseType'      : 'json',
     },
     'post /admin/theme/:name/update': {
       'controller'    : 'admin',
       'action'        : 'updateTheme',
       'permission'    : 'manage_theme',
-      'response'      : 'json',
+      'responseType'      : 'json',
     },
     'get /theme': {
       controller: 'admin',
