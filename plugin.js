@@ -12,17 +12,6 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   plugin.tplFolder = path.resolve(__dirname, 'server/templates/');
 
   plugin.fastLoader = function fastLoader(we, done) {
-    // controllers:
-    we.controllers.admin = new we.class.Controller({
-      /**
-       * Index page route /
-       */
-      index(req, res) {
-        res.locals.template = 'home/index';
-        res.ok();
-      }
-    });
-
     we.controllers.adminTheme = new we.class.Controller(require('./server/controllers/adminTheme.js'));
 
     done();
