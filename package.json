@@ -16,7 +16,7 @@
     "express-mysql-session": "^2.1.0",
     "fs-extra": "^7.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^6.0.0",
+    "mocha": "^6.0.1",
     "mysql": "^2.16.0",
     "rimraf": "^2.6.3",
     "sinon": "^7.2.4",
