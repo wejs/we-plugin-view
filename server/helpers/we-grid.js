@@ -23,7 +23,14 @@ module.exports = function(we) {
       }
 
       html += '<div class="we-grid-col col col-md-'+ bsColSize +'">';
-        html += options.fn(items[i]);
+        html += options.fn(items[i], {
+          data: {
+            '@index': i,
+            '@bsColSize': bsColSize,
+            '@colsPerRow': colsPerRow,
+            '@cols': cols
+          }
+        });
       html += '</div>';
 
       if (i == (cols-1) ) {
