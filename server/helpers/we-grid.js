@@ -22,7 +22,7 @@ module.exports = function(we) {
         rowInit = false;
       }
 
-      html += '<div class="we-grid-col col col-md-'+ bsColSize +'">';
+      html += '<div class="we-grid-col col-xs-12 col-md-'+ bsColSize +'">';
         html += options.fn(items[i], {
           data: {
             '@index': i,
