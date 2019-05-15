@@ -6,21 +6,36 @@
 
 module.exports = function(we) {
   return function renderRecordTeaser() {
-    const options = arguments[arguments.length-1];
+    const opts = arguments[arguments.length-1];
+
+    let ctx;
+    // find context to get theme name
+    if (opts.hash && opts.hash.locals) {
+      ctx = opts.hash.locals;
+    } else if (this.theme) {
+      ctx = this;
+    } else if (this.locals && this.locals.theme) {
+      ctx = this.locals;
+    } else {
+      we.log.verbose('we-plugin-view:helper:render-record-teaser:locals not found');
+      return '';
+    }
+
+    let theme = (opts.hash.theme || ctx.theme);
 
     if (
-      !options.hash.record ||
-      !options.hash.locals ||
-      !options.hash.modelName
+      !opts.hash.record ||
+      !ctx ||
+      !opts.hash.modelName
     ) return '';
 
     return new we.hbs.SafeString(we.view.renderTemplate(
-      options.hash.modelName + '/teaser',
-      options.hash.locals.theme,
+      opts.hash.modelName + '/teaser',
+      theme,
       {
-        modelName: options.hash.modelName,
-        record: options.hash.record,
-        locals: options.hash.locals
+        modelName: opts.hash.modelName,
+        record: opts.hash.record,
+        locals: ctx
       }
     ));
   };

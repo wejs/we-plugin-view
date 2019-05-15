@@ -1,7 +1,8 @@
-var assert = require('assert');
-var helpers = require('we-test-tools').helpers;
-var sinon = require('sinon');
-var moment, we;
+const assert = require('assert'),
+  helpers = require('we-test-tools').helpers,
+  sinon = require('sinon');
+
+let moment, we;
 
 describe('coreHelpers', function () {
 
@@ -12,7 +13,7 @@ describe('coreHelpers', function () {
   });
 
   describe('ifCondHelper', function () {
-    var helper;
+    let helper;
 
     before(function (done) {
       helper = require('../../../server/helpers/ifCond.js')(we);
@@ -537,7 +538,7 @@ describe('coreHelpers', function () {
       done();
     });
     it('gridHelper should render one grid with 3 cols', function (done) {
-      var opts = {
+      let opts = {
         hash: {
           items: ['1', '2', '3', '4', '5'],
           cols: 2,
@@ -546,10 +547,12 @@ describe('coreHelpers', function () {
           assert(opts.hash.items.indexOf(i)>-1);
           return i;
         }
-      }
-      var text = helper.bind({})(opts);
+      };
+
+      let text = helper.bind({})(opts);
+
       assert(text.string);
-      assert(text.string.indexOf('<div class="row we-grid-row"><div class="we-grid-col col col-md-6">') >-1 );
+      assert(text.string.indexOf('<div class="row we-grid-row"><div class="we-grid-col col-xs-12 col-md-6">') >-1 );
       done();
     });
     it('gridHelper should fun inverse fn without items', function (done) {
