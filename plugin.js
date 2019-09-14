@@ -10,6 +10,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   const plugin = new Plugin(__dirname);
 
   plugin.tplFolder = path.resolve(__dirname, 'server/templates/');
+  plugin.setCanonicalURL = require('./lib/setCanonicalURL.js');
 
   plugin.fastLoader = function fastLoader(we, done) {
     we.controllers.adminTheme = new we.class.Controller(require('./server/controllers/adminTheme.js'));
