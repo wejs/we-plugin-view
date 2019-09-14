@@ -7,3 +7,4 @@ files/templatesCacheBuilds.js
 .travis.yml
 .gitignore
 *.log
+.nycrc

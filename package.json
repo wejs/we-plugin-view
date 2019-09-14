@@ -5,7 +5,7 @@
   "main": "plugin.js",
   "scripts": {
     "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js",
-    "coverage": "NODE_ENV=test LOG_LV=info node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -u exports -R spec test/bootstrap.js test/**/*.test.js"
+    "coverage": "NODE_ENV=test LOG_LV=info nyc mocha test/bootstrap.js test/**/*.test.js -b"
   },
   "dependencies": {
     "hbs": "4.0.4",
@@ -15,7 +15,7 @@
   "devDependencies": {
     "connect-sqlite3": "^0.9.11",
     "fs-extra": "^8.0.1",
-    "istanbul": "^0.4.5",
+    "nyc": "^14.1.1",
     "mocha": "^6.1.4",
     "rimraf": "^2.6.3",
     "sinon": "^7.3.2",
