@@ -1,4 +1,5 @@
 test
+config
 files/uploads
 files/templatesCacheBuilds.js
 .jscsrc
@@ -7,4 +8,7 @@ files/templatesCacheBuilds.js
 .travis.yml
 .gitignore
 *.log
+*.sqlite
+*.sql
 .nycrc
+.nyc_output

@@ -5,3 +5,6 @@ node_modules
 coverage
 config
 *.log
+*.sqlite
+*.sql
+.nyc_output

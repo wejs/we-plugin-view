@@ -578,7 +578,7 @@ describe('coreHelpers', function () {
       done();
     });
     it('weMessagesHelper should render messages from options.data.root.locals.req.res.getMessages()', function (done) {
-      var opts = {
+      const opts = {
         data: {
           root: {
             theme: 'app',
@@ -594,8 +594,8 @@ describe('coreHelpers', function () {
             }
           }
         }
-      }
-      var text = helper.bind({})(opts);
+      };
+      let text = helper.bind({})(opts);
       assert(text.string);
       assert(text.string.indexOf('<div class="alert alert-warning alert-dismissable">') >-1 );
       assert(text.string.indexOf('a message') >-1 );
@@ -604,19 +604,19 @@ describe('coreHelpers', function () {
   });
 
   describe('weStripTagsHelper', function () {
-   var helper;
+   let helper;
     before(function (done) {
       helper = require('../../../server/helpers/we-strip-tags.js')(we);
       done();
     });
     it('weStripTagsHelper should all tags from html text and strip tags', function (done) {
-      var opts = {
+      const opts = {
         hash: {
           text: '<strong>Hello word</strong>',
-          maxLength: 5
+          maxLength: 8
         }
-      }
-      var text = helper(opts);
+      };
+      const text = helper(opts);
       assert.equal('Hello...', text);
       done();
     });

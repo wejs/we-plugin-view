@@ -9,9 +9,8 @@ const projectPath = process.cwd(),
 let we;
 
 before(function (callback) {
-  testTools.copyLocalSQLiteConfigIfNotExitst(projectPath, callback);
+  testTools.copyLocalSQLiteConfigIfNotExists(projectPath, callback);
 });
-
 
 before(function(callback) {
   this.slow(100);
