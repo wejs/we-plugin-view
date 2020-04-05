@@ -8,7 +8,7 @@
     "coverage": "NODE_ENV=test LOG_LV=info nyc mocha test/bootstrap.js test/**/*.test.js -b"
   },
   "dependencies": {
-    "hbs": "^4.1.1",
+    "hbs": "4.1.0",
     "node-stream-zip": "^1.9.1",
     "request": "^2.88.2"
   },
