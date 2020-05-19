@@ -8,20 +8,20 @@
     "coverage": "NODE_ENV=test LOG_LV=info nyc mocha test/bootstrap.js test/**/*.test.js -b"
   },
   "dependencies": {
-    "hbs": "4.1.0",
-    "node-stream-zip": "^1.9.1",
+    "hbs": "4.1.1",
+    "node-stream-zip": "^1.11.1",
     "request": "^2.88.2"
   },
   "devDependencies": {
     "connect-sqlite3": "^0.9.11",
     "fs-extra": "^9.0.0",
     "nyc": "^15.0.1",
-    "mocha": "^7.1.1",
+    "mocha": "^7.1.2",
     "rimraf": "^3.0.2",
-    "sinon": "^9.0.1",
-    "sqlite3": "^4.1.1",
+    "sinon": "^9.0.2",
+    "sqlite3": "^4.2.0",
     "supertest": "^4.0.2",
-    "we-core": "3.1.10",
+    "we-core": "3.1.11",
     "we-test-tools": "1.0.0",
     "we-theme-site-wejs": "wejs/we-theme-site-wejs"
   },
