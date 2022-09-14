@@ -226,7 +226,12 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     if (req.query.contentOnly) {
       res.send(req.we.view.renderTemplate(res.locals.template, res.locals.theme, res.locals));
     } else {
-      res.send(res.renderPage(req, res, res.locals.data));
+      if (res && res.renderPage) {
+        res.send(res.renderPage(req, res, res.locals.data));
+      } else {
+        // res.renderPage should be set, if not we have a unspected error
+        res.status(500).send({ error: 'res.renderPage is not set' });
+      }
     }
   };
 
